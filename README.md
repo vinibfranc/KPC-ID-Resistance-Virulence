@@ -95,7 +95,7 @@ Os arquivos com os reads que passaram no controle de qualidade e podem ser usado
 
 ### 4. Remoção de reads humanos
 
-Essa etapa irá requerer o download do genoma humano (GRCh38), a construção de uma hash table para o alinhamento e o alinhamento propriamente dito utilizando [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml). Por ser bastante demorado, irei disponibilizar os arquivos resultantes no [link](https://mega.nz/#F!8QYnWC7D).
+Essa etapa irá requerer o download do genoma humano (GRCh38), a construção de uma hash table para o alinhamento e o alinhamento propriamente dito utilizando [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml). Por ser bastante demorado, irei disponibilizar os arquivos resultantes no [link](https://mega.nz/#F!8QYnWC7D!ZX6EkNGuJ5wDN838oWC45w).
 
 Baixar os arquivos ```SRR8580960_trimmed.sam``` e ```SRR8580963_trimmed.sam```, criar pasta em ```results/bowtie2/sam``` e copiar os arquivos para ela.
 
@@ -154,9 +154,9 @@ $ samtools fastq results/bowtie2/unmapped/SRR8580963_trimmed.bam > results/bowti
 
 Nessa etapa, os reads serão comparados contra um abrangente banco de dados utilizando o [Kraken2](https://ccb.jhu.edu/software/kraken2/), a fim de identificar os micro-organismos presentes neste metagenoma. 
 
-Essa etapa irá requerer o download de genomas de vírus, bactérias, fungos e parasitas do NCBI, a construção de uma hash table para o alinhamento e o alinhamento propriamente dito. Por ser bastante demorado, irei disponibilizar os arquivos resultantes no [link](https://mega.nz/#F!8QYnWC7D).
+Essa etapa irá requerer o download de genomas de vírus, bactérias, fungos e parasitas do NCBI, a construção de uma hash table para o alinhamento e o alinhamento propriamente dito. Por ser bastante demorado, irei disponibilizar os arquivos resultantes no [link](https://mega.nz/#F!8QYnWC7D!ZX6EkNGuJ5wDN838oWC45w).
 
-Baixar os arquivos da pasta ```kraken2```.
+Baixar os arquivos da pasta ```kraken2``` e inserir dentro da pasta ```results```.
 
 De qualquer forma, os passos para replicação dessa etapa são:
 
@@ -210,6 +210,8 @@ $ kraken2 --db $DB_PATH --threads 4 \
 
 Analise os resultados gerados em ```results/kraken2/classified```, ```results/kraken2/unclassified```, ```results/kraken2/report``` e ```results/kraken2/tabular```.
 
+A partir daqui você pode continuar a executar os comandos normalmente, pois os arquivos disponibilizados não contém os resultados de agora em diante:
+
 #### 5.4. Filtragem de resultados para incluir somente patógenos de neuroinfecções
 
 Para reduzir nosso escopo de análise, podemos utilizar um script em Python para filtrar os resultados para considerar somente patógenos de neuroinfecções:
@@ -234,7 +236,79 @@ $ ImportTaxonomy.pl -o results/krona/SRR8580963_trimmed_krona.html -t 3 -s 4 res
 
 ### 6. Montagem de metagenoma
 
+Para montar os reads em fragmentos maiores com o objetivo posterior de identificar genes de resistência e virulência, utilizamos a ferramenta [megahit](https://github.com/voutcn/megahit):
+
+```
+$ mkdir -p results/megahit
+$ megahit -r results/bowtie2/fastq/SRR8580960_trimmed.fastq -o results/megahit/SRR8580960_trimmed.out
+$ megahit -r results/bowtie2/fastq/SRR8580963_trimmed.fastq -o results/megahit/SRR8580963_trimmed.out
+```
+
 ### 7. Identificação de genes de resistência
+
+Para identificar genes de resistência, iremos utilizar o banco de dados "The Comprehensive Antibiotic Resistance Database" ([CARD](https://card.mcmaster.ca/analyze)).
+
+Inicialmente vamos acessar https://card.mcmaster.ca/download e procurar por ```Download CARD Data```. Em seguida, vamos fazer o download do banco de dados.
+
+Em seguida vamos extrair o arquivo e mover para a pasta ```ref_dbs```.
+
+Após ler o arquivo ```CARD-Download-README.txt```, podemos perceber que o arquivo ```nucleotide_fasta_protein_homolog_model.fasta``` possui as sequẽncias de referência que desejamos. Então iremos construir uma banco de dados de referência para depois fazer um alinhamento utilizando o [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) em linha de comando.
+
+Para coonstruir o banco de dados, digite:
+
+```
+$ makeblastdb -in ref_dbs/card-data/nucleotide_fasta_protein_homolog_model.fasta -title Resistance_db -dbtype nucl -out ref_dbs/card-data/Resistance_db
+```
+
+Depois, iremos usar o BLASTN para alinhar nossas sequências montadas ao banco de dados CARD:
+
+```
+$ mkdir -p results/blastn_card_montados
+$ blastn -query results/megahit/SRR8580960_trimmed.out/final.contigs.fa -db ref_dbs/card-data/Resistance_db -out results/blastn_card_montados/SRR8580960_trimmed.tab -evalue 1e-5 -outfmt 6 -max_target_seqs 1
+$ blastn -query results/megahit/SRR8580963_trimmed.out/final.contigs.fa -db ref_dbs/card-data/Resistance_db -out results/blastn_card_montados/SRR8580963_trimmed.tab -evalue 1e-5 -outfmt 6 -max_target_seqs 1
+```
+
+Para analisar os dados apresentados em ```results/blastn_card_montados```, consideremos a seguinte tabela, que apresenta o significado das colunas em ordem:
+
+Field | Description
+| --- | --- |
+| qseqid | query (e.g., gene) sequence id
+| sseqid | subject (e.g., reference genome) sequence id
+| pident | percentage of identical matches
+| length | alignment length
+| mismatch | number of mismatches
+| gapopen | number of gap openings
+| qstart | start of alignment in query
+| qend | end of alignment in query
+| sstart | start of alignment in subject
+| send | end of alignment in subject
+| evalue | expect value
+| bitscore | bit score
+
+Para analisarmos mais especificamente nossos resultados...
 
 ### 8. Identificação de genes de virulência
 
+Para identificar genes de virulência, iremos utilizar o banco de dados "Virulence Factors of Bacterial Pathogens" ([VFDB](http://www.mgc.ac.cn/cgi-bin/VFs/v5/main.cgi)).
+
+Inicialmente vamos acessar http://www.mgc.ac.cn/cgi-bin/VFs/v5/main.cgi e procurar por ```Download``` no canto inferior esquerdo. Em seguida, vamos fazer o download do banco de dados clicando em ```Download sequences of full dataset```.
+
+Em seguida vamos extrair o arquivo, criar uma pasta em ```ref_dbs/vfdb``` e mover o arquivo para a pasta ```ref_dbs/vfdb```.
+
+Para coonstruir o banco de dados, digite:
+
+```
+$ makeblastdb -in ref_dbs/vfdb/VFDB_setB_nt.fas -title Virulence_db -dbtype nucl -out ref_dbs/vfdb/Virulence_db
+```
+
+Depois, iremos usar o BLASTN para alinhar nossas sequências montadas ao banco de dados VFDB:
+
+```
+$ mkdir -p results/blastn_vfdb_montados
+$ blastn -query results/megahit/SRR8580960_trimmed.out/final.contigs.fa -db ref_dbs/vfdb/Virulence_db -out results/blastn_vfdb_montados/SRR8580960_trimmed.tab -evalue 1e-5 -outfmt 6 -max_target_seqs 1
+$ blastn -query results/megahit/SRR8580963_trimmed.out/final.contigs.fa -db ref_dbs/vfdb/Virulence_db -out results/blastn_vfdb_montados/SRR8580963_trimmed.tab -evalue 1e-5 -outfmt 6 -max_target_seqs 1
+```
+
+Para analisar os dados apresentados em ```results/blastn_vfdb_montados```, consideremos a mesma tabela apresentada logo acima.
+
+Para analisarmos mais especificamente nossos resultados...
