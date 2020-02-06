@@ -285,7 +285,42 @@ Field | Description
 | evalue | expect value
 | bitscore | bit score
 
-Para analisarmos mais especificamente nossos resultados...
+Para analisarmos mais especificamente nossos resultados, podemos acessar a interface Web do CARD (https://card.mcmaster.ca/) e fazer buscas. O que precisamos para isso é ir em nossos arquivos tabulados presentes em ```results/blastn_card_montados``` e procurar pelos acession numbers na segunda coluna do arquivo. Por exemplo, ```ARO:3004122```. Depois de encontrá-los, podemos ir na barra de busca no canto superior direito da página e colar esse código. Finalmente, vamos ter acesso a uma página como esta: https://card.mcmaster.ca/ontology/41247, com dados relevantes desta sequência associada a resistência que foi encontrada na nossa amostra. 
+
+Abaixo, uma lista com os códigos encontrados nesta análise, para facilitar nossas buscas:
+
+Para a amostra SRR8580960:
+
+```
+ARO:3004122 (Klebsiella)
+ARO:3001328 (Escherichia)
+ARO:3000216
+ARO:3000518
+ARO:3000793
+ARO:3002985
+ARO:3000491
+ARO:3000216
+ARO:3003056
+ARO:3004580 (Klebsiella)
+ARO:3003952
+ARO:3003923
+ARO:3000830
+ARO:3004588 (Klebsiella)
+ARO:3003209
+ARO:3000676
+ARO:3000796
+ARO:3001084
+ARO:3004122 (Klebsiella)
+ARO:3000237
+```
+
+Para a amostra SRR8580963:
+
+```
+ARO:3002683
+ARO:3002683
+ARO:3000167
+```
 
 ### 8. Identificação de genes de virulência
 
