@@ -265,6 +265,9 @@ $ ImportTaxonomy.pl -o results/krona/SRR8580960_trimmed_krona.html -t 3 -s 4 res
 $ ImportTaxonomy.pl -o results/krona/SRR8580963_trimmed_krona.html -t 3 -s 4 results/kraken2/tabular/SRR8580963_trimmed.txt
 ```
 
+Agora podemos visualizar o gráfico gerado, que mostra a composição microbiana de cada amostra, nos arquivos ```SRR8580960_trimmed_krona.html``` e ```SRR8580963_trimmed_krona.html``` que estão na pasta ```results/krona```.
+
+
 ### 6. Montagem de metagenoma
 
 Para montar os reads em fragmentos maiores com o objetivo posterior de identificar genes de resistência e virulência, utilizamos a ferramenta [megahit](https://github.com/voutcn/megahit):
@@ -275,6 +278,8 @@ $ megahit -r results/bowtie2/fastq/SRR8580960_trimmed.fastq -o results/megahit/S
 $ megahit -r results/bowtie2/fastq/SRR8580963_trimmed.fastq -o results/megahit/SRR8580963_trimmed.out
 ```
 
+O resultado final das montagens pode ser encontrado nos arquivos ```final.contings.fa```, dentro da pasta ```results/megahit```.
+
 ### 7. Identificação de genes de resistência
 
 Para identificar genes de resistência, iremos utilizar o banco de dados "The Comprehensive Antibiotic Resistance Database" ([CARD](https://card.mcmaster.ca/analyze)).
@@ -283,9 +288,9 @@ Inicialmente vamos acessar https://card.mcmaster.ca/download e procurar por ```D
 
 Em seguida vamos extrair o arquivo e mover para a pasta ```ref_dbs```.
 
-Após ler o arquivo ```CARD-Download-README.txt```, podemos perceber que o arquivo ```nucleotide_fasta_protein_homolog_model.fasta``` possui as sequẽncias de referência que desejamos. Então iremos construir uma banco de dados de referência para depois fazer um alinhamento utilizando o [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) em linha de comando.
+Após ler o arquivo ```CARD-Download-README.txt```, podemos perceber que o arquivo ```nucleotide_fasta_protein_homolog_model.fasta``` possui as sequências de referência que desejamos. Então iremos construir uma banco de dados de referência para depois fazer um alinhamento utilizando o [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) em linha de comando.
 
-Para coonstruir o banco de dados, digite:
+Para construir o banco de dados, digite:
 
 ```
 $ makeblastdb -in ref_dbs/card-data/nucleotide_fasta_protein_homolog_model.fasta -title Resistance_db -dbtype nucl -out ref_dbs/card-data/Resistance_db
@@ -361,7 +366,7 @@ Inicialmente vamos acessar http://www.mgc.ac.cn/cgi-bin/VFs/v5/main.cgi e procur
 
 Em seguida vamos extrair o arquivo, criar uma pasta em ```ref_dbs/vfdb``` e mover o arquivo para a pasta ```ref_dbs/vfdb```.
 
-Para coonstruir o banco de dados, digite:
+Para construir o banco de dados, digite:
 
 ```
 $ makeblastdb -in ref_dbs/vfdb/VFDB_setB_nt.fas -title Virulence_db -dbtype nucl -out ref_dbs/vfdb/Virulence_db
