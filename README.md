@@ -17,7 +17,30 @@ Nosso tutorial irá conter as seguintes etapas:
 
 ----------------------------------------------------------------
 
+## Pré-requisitos
+
+Para realizar esse tutorial, você precisa ter um computador com o [Ubuntu 18.04](https://ubuntu.com/) instalado. Caso não tenha, você pode seguir os passos abaixo para usar uma máquina virtual:
+
+- Baixar e instalar a [VirtualBox](https://www.virtualbox.org/).
+- Baixar e carregar a imagem (ISO) do [Ubuntu 18.04](http://releases.ubuntu.com/18.04/) no VirtualBox. Para isso, você pode seguir este [tutorial](https://www.youtube.com/watch?v=zsqJhle7CXE).
+
 ## Pipeline
+
+Para que possamos ter acesso aos arquivos deste tutorial, iremos baixar os dados dele. Para isso, vamos clonar o repositório do Github para ter os mesmos arquivos na nossa máquina.
+
+Primeiro instalamos o git:
+
+```
+sudo apt-get install git
+```
+
+Depois, clonamos o repositório:
+
+```
+git clone https://github.com/vinibfranc/KPC-ID-Resistance-Virulence
+```
+
+Pronto! Agora já podemos iniciar nosso tutorial!
 
 ### 1. Configuração das ferramentas de bioinformática
 
@@ -36,10 +59,12 @@ $ MEU_CAMINHO="/home/vinibfranc/TCC/AR_Bac/KPC-ID-Resistance-Virulence/ferrament
 $ ./configuracao.sh $MEU_CAMINHO
 ```
 
+OBS.: O caminho irá variar de acordo com o computador, por isso você precisa escolher um caminho válido no seu computador.
+
 Depois, precisamos salvar as alterações no arquivo ```~/.bashrc```, fazendo:
 
 ```
-source ~/.bashrc
+$ source ~/.bashrc
 ```
 
 
@@ -99,6 +124,8 @@ Essa etapa irá requerer o download do genoma humano (GRCh38), a construção de
 
 Baixar os arquivos ```SRR8580960_trimmed.sam``` e ```SRR8580963_trimmed.sam```, criar pasta em ```results/bowtie2/sam``` e copiar os arquivos para ela.
 
+<b>-----> Você não precisa executar os comandos abaixo, pois os arquivos já foram baixados! <-----</b>
+
 De qualquer forma, os passos para replicação dessa etapa são:
 
 #### 4.1. Download do genoma humano já indexado
@@ -123,6 +150,8 @@ $ bowtie2 --threads 4 -x ref_dbs/human_db/GCA_000001405.15_GRCh38_no_alt_analysi
 Será gerado o arquivo SAM, o qual armazena as sequências alinhadas à sequência de referência, bem como suas coordenadas genômicas.
 
 OBS.: É esperado que nada (ou praticamente nada) alinhe ao genoma humano, pois os reads humanos já haviam sido retirados antes da submissão ao SRA.
+
+<b>-----> Agora você pode voltar a executar os comandos normalmente! <-----</b>
 
 #### 4.3. Remoção de reads humanos
 
@@ -156,7 +185,9 @@ Nessa etapa, os reads serão comparados contra um abrangente banco de dados util
 
 Essa etapa irá requerer o download de genomas de vírus, bactérias, fungos e parasitas do NCBI, a construção de uma hash table para o alinhamento e o alinhamento propriamente dito. Por ser bastante demorado, irei disponibilizar os arquivos resultantes no [link](https://mega.nz/#F!8QYnWC7D!ZX6EkNGuJ5wDN838oWC45w).
 
-Baixar os arquivos da pasta ```kraken2``` e inserir dentro da pasta ```results```.
+Baixar os arquivos da pasta ```kraken2``` no link disponibilizado e inserir dentro da pasta ```results``` do seu computador.
+
+<b>-----> Você não precisa executar os comandos abaixo, pois os arquivos já foram baixados! <-----</b>
 
 De qualquer forma, os passos para replicação dessa etapa são:
 
@@ -208,9 +239,9 @@ $ kraken2 --db $DB_PATH --threads 4 \
             --output "$KRAKEN2/tabular/SRR8580963_trimmed.txt" results/bowtie2/fastq/SRR8580963_trimmed.fastq
 ```
 
-Analise os resultados gerados em ```results/kraken2/classified```, ```results/kraken2/unclassified```, ```results/kraken2/report``` e ```results/kraken2/tabular```.
+<b>-----> Agora você pode voltar a executar os comandos normalmente! <-----</b>
 
-A partir daqui você pode continuar a executar os comandos normalmente, pois os arquivos disponibilizados não contém os resultados de agora em diante:
+Analise os resultados gerados em ```results/kraken2/classified```, ```results/kraken2/unclassified```, ```results/kraken2/report``` e ```results/kraken2/tabular```.
 
 #### 5.4. Filtragem de resultados para incluir somente patógenos de neuroinfecções
 
@@ -285,7 +316,7 @@ Field | Description
 | evalue | expect value
 | bitscore | bit score
 
-Para analisarmos mais especificamente nossos resultados, podemos acessar a interface Web do CARD (https://card.mcmaster.ca/) e fazer buscas. O que precisamos para isso é ir em nossos arquivos tabulados presentes em ```results/blastn_card_montados``` e procurar pelos acession numbers na segunda coluna do arquivo. Por exemplo, ```ARO:3004122```. Depois de encontrá-los, podemos ir na barra de busca no canto superior direito da página e colar esse código. Finalmente, vamos ter acesso a uma página como esta: https://card.mcmaster.ca/ontology/41247, com dados relevantes desta sequência associada a resistência que foi encontrada na nossa amostra. 
+Para analisarmos mais especificamente nossos resultados, podemos acessar a interface Web do CARD (https://card.mcmaster.ca/) e fazer as buscas. O que precisamos para isso é ir em nossos arquivos tabulados presentes em ```results/blastn_card_montados``` e procurar pelos acession numbers na segunda coluna do arquivo. Por exemplo, ```ARO:3004122```. Depois de encontrá-los, podemos ir na barra de busca no canto superior direito da página e colar esse código. Finalmente, vamos ter acesso a uma página como esta: https://card.mcmaster.ca/ontology/41247, com dados relevantes desta sequência associada a resistência que foi encontrada na nossa amostra. 
 
 Abaixo, uma lista com os códigos encontrados nesta análise, para facilitar nossas buscas:
 
