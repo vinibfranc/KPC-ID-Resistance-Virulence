@@ -26,18 +26,28 @@ Para realizar esse tutorial, você precisa ter um computador com o [Ubuntu 18.04
 
 ## Pipeline
 
-Para que possamos ter acesso aos arquivos deste tutorial, iremos baixar os dados dele. Para isso, vamos clonar o repositório do Github para ter os mesmos arquivos na nossa máquina.
+Inicialmente, para executar os comandos que queremos vamos precisar o Terminal. Para abrir ele, pressione as teclas ```Ctrl+Alt+T```.
 
-Primeiro instalamos o git:
-
-```
-sudo apt-get install git
-```
-
-Depois, clonamos o repositório:
+Com o terminal aberto, podemos criar uma pasta chamada ```tutorial_1``` e entrar nela. Para isso, basta digitarmos:
 
 ```
-git clone https://github.com/vinibfranc/KPC-ID-Resistance-Virulence
+$ mkdir tutorial_1
+$ cd tutorial_1
+```
+
+Para que possamos ter acesso aos arquivos deste tutorial, e para tê-los na nossa máquina, iremos clonar o repositório que criei no Github.
+
+Primeiro, instalamos o git:
+
+```
+$ sudo apt-get install git
+```
+
+Depois, clonamos o repositório e entramos na pasta principal:
+
+```
+$ git clone https://github.com/vinibfranc/KPC-ID-Resistance-Virulence
+$ cd KPC-ID-Resistance-Virulence
 ```
 
 Pronto! Agora já podemos iniciar nosso tutorial!
@@ -52,11 +62,10 @@ O primeiro passo é dar permissão para esse script ```configuracao.sh``` ser ex
 $ chmod +x configuracao.sh
 ```
 
-Para rodar o script, basta criar uma variável com o caminho para baixar e instalar as ferramentas e em seguida rodar o script:
+Para rodar o script, basta rodar o script passando como parâmetro a pasta que vai armazenar os arquivos das ferramentas:
 
 ```
-$ MEU_CAMINHO="/home/vinibfranc/TCC/AR_Bac/KPC-ID-Resistance-Virulence/ferramentas"
-$ ./configuracao.sh $MEU_CAMINHO
+$ ./configuracao.sh ferramentas
 ```
 
 OBS.: O caminho irá variar de acordo com o computador, por isso você precisa escolher um caminho válido no seu computador.

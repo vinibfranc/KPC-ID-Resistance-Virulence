@@ -74,4 +74,3 @@ unzip master.zip.2
 cd Krona-master/
 KronaTools/install.pl --prefix $1/Krona-master/KronaTools/
 echo 'PATH=$PATH:'$(pwd)/KronaTools/scripts/ >> ~/.bashrc
-cd .
