@@ -86,7 +86,7 @@ $ mkdir -p amostras
 $ cd amostras
 ```
 
-As amostras no formato FASTQ podem ser baixadas com a ferramenta [sra-tools](https://github.com/ncbi/sra-tools) utilizando o seguinte comando:
+As amostras no formato FASTQ podem ser baixadas diretamento do [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) (SRA) com a ferramenta [sra-tools](https://github.com/ncbi/sra-tools) utilizando o seguinte comando:
 
 ```
 $ fasterq-dump SRR8580960
@@ -392,3 +392,14 @@ $ blastn -query results/megahit/SRR8580963_trimmed.out/final.contigs.fa -db ref_
 Para analisar os dados apresentados em ```results/blastn_vfdb_montados```, consideremos a mesma tabela apresentada logo acima.
 
 Para analisarmos mais especificamente nossos resultados...
+
+----------------------------------------
+
+## Autores
+
+- Vinícius Bonetti Franceschi (vinibfranc@gmail.com)
+- Claudia Elizabeth Thompson (thompson.ufcspa@gmail.com)
+
+## Agradecimentos
+
+Agradecemos os autores do artigo [Laboratory validation of a clinical metagenomic sequencing assay for pathogen detection in cerebrospinal fluid](https://genome.cshlp.org/content/29/5/831.long) pela publicação e disponibilização das amostras publicamente no SRA.
