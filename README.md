@@ -276,6 +276,7 @@ $ ImportTaxonomy.pl -o results/krona/SRR8580963_trimmed_krona.html -t 3 -s 4 res
 
 Agora podemos visualizar o gráfico gerado, que mostra a composição microbiana de cada amostra, nos arquivos ```SRR8580960_trimmed_krona.html``` e ```SRR8580963_trimmed_krona.html``` que estão na pasta ```results/krona```.
 
+Outra forma de visualizar interativamente nossos dados é utilizando a ferramentas Pavian (https://fbreitwieser.shinyapps.io/pavian/). Nela, fazemos upload dos arquivos presentes em ```kraken2/report``` e temos acesso a várias informações sobre essa amostra metagenômica.
 
 ### 6. Montagem de metagenoma
 
@@ -391,7 +392,82 @@ $ blastn -query results/megahit/SRR8580963_trimmed.out/final.contigs.fa -db ref_
 
 Para analisar os dados apresentados em ```results/blastn_vfdb_montados```, consideremos a mesma tabela apresentada logo acima.
 
-Para analisarmos mais especificamente nossos resultados...
+Para analisarmos mais especificamente nossos resultados, podemos printar os fatores de virulência detectados no terminal para buscá-los no link ```http://www.mgc.ac.cn/cgi-bin/VFs/gene.cgi?GeneID=CODIGO```.
+
+```
+$ awk '{print $2}' results/blastn_vfdb_montados/SRR8580960_trimmed.tab
+
+VFG048833
+VFG012785(gi:3776756)
+VFG049196
+VFG034481(gi:443616322)
+VFG012874(gi:30064027)
+VFG048839
+VFG048839
+VFG049260
+VFG000477(gi:16766230)
+VFG049242
+VFG012785(gi:3776756)
+VFG048620
+VFG012785(gi:3776756)
+VFG033845(gi:386622094)
+VFG049007(gb|YP_002920216.1)
+VFG000143(gb|NP_253699)
+VFG049146
+VFG048513
+VFG012785(gi:3776756)
+VFG044341(gi:292489704)
+VFG040958(gi:206580997)
+VFG033845(gi:386622094)
+VFG012785(gi:3776756)
+VFG048693(gb|YP_005226603.1)
+VFG048541
+VFG048497
+VFG001443(gb|AAF37887)
+VFG049245
+VFG048429(gb|YP_002918378.1)
+VFG048839
+VFG012785(gi:3776756)
+VFG012785(gi:3776756)
+VFG043545(gi:218560235)
+VFG009267(gi:145220712)
+VFG001443(gb|AAF37887)
+VFG048717(gb|YP_005226606.1)
+VFG049140
+VFG040960(gi:206577210)
+VFG049139
+VFG000478(gi:16764063)
+VFG049102
+VFG049017
+VFG044362(gi:307131889)
+VFG044347(gi:307130370)
+VFG018396(gi:161614534)
+VFG048723(gb|YP_005226607.1)
+VFG048723(gb|YP_005226607.1)
+VFG026967(gi:397679869)
+VFG033845(gi:386622094)
+VFG048721
+VFG036825(gi:385855658)
+VFG049145
+VFG048277(gb|YP_002921140.1)
+VFG048535
+VFG048753
+VFG026770(gi:499075570)
+VFG012785(gi:3776756)
+VFG048828
+VFG048325
+```
+
+Da mesma forma, para a outra amostra:
+
+```
+$ awk '{print $2}' results/blastn_vfdb_montados/SRR8580963_trimmed.tab
+
+VFG012785(gi:3776756)
+VFG000251(gb|NP_273131)
+```
+
+Mutações que conferem resistência e virulência, bem como vias (redes de interações entre moléculas) responsáveis pelo processo neuroinfeccioso também podem ser estudadas, mas isso é um tema para um próximo tutorial ;)
 
 ----------------------------------------
 
