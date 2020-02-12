@@ -8,7 +8,7 @@ echo "Configurando dependências para rodar o pipeline..."
 # Para baixar os arquivos FASTQ do Sequence Read Archive (SRA)
 mkdir -p $1
 cd $1
-wget http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.6-1/sratoolkit.2.9.6-1-ubuntu64.tar.gz
+wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.6-1/sratoolkit.2.9.6-1-ubuntu64.tar.gz
 tar xzvf sratoolkit.2.9.6-1-ubuntu64.tar.gz
 cd sratoolkit.2.9.6-1-ubuntu64/
 echo 'PATH=$PATH:'$(pwd)/bin/ >> ~/.bashrc
