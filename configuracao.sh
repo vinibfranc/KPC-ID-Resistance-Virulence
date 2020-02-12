@@ -20,7 +20,8 @@ sudo apt-get install -y fastqc
 # Instalação do cutadapt
 sudo apt-get -y install python3
 sudo apt install -y python3-pip
-pip3 install --user cutadapt
+sudo apt install -y cutadapt
+pip3 install pandas
 
 # Instalação do TrimGalore
 sudo apt-get -y install curl
@@ -70,7 +71,7 @@ cd ..
 
 # Instalação do KRONA
 wget https://github.com/marbl/Krona/archive/master.zip
-unzip master.zip.2
+unzip master.zip.1
 cd Krona-master/
-KronaTools/install.pl --prefix $1/Krona-master/KronaTools/
+KronaTools/install.pl --prefix KronaTools/ 
 echo 'PATH=$PATH:'$(pwd)/KronaTools/scripts/ >> ~/.bashrc

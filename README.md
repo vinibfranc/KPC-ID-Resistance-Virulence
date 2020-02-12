@@ -22,7 +22,12 @@ Nosso tutorial irá conter as seguintes etapas:
 Para realizar esse tutorial, você precisa ter um computador com o [Ubuntu 18.04](https://ubuntu.com/) instalado. Caso não tenha, você pode seguir os passos abaixo para usar uma máquina virtual:
 
 - Baixar e instalar a [VirtualBox](https://www.virtualbox.org/).
-- Baixar e carregar a imagem (ISO) do [Ubuntu 18.04](http://releases.ubuntu.com/18.04/) no VirtualBox. Para isso, você pode seguir este [tutorial](https://www.youtube.com/watch?v=zsqJhle7CXE).
+- Baixar e carregar a imagem (ISO) configurada do Ubuntu 18.04 (https://mega.nz/#!EYQhEISI!nNPEtzzITqjv9jYc8UgpkS7LbNmIebEUbPgN8HYgn_o) no VirtualBox. Depois, acesse o VirtualBox, vá em ```Arquivo > Importar appliance > Selecione o arquivo > Próximo > Modifique para 4 CPUs > Importar```. Inicie a máquina. Os dados para acesso à máquina são:
+
+```
+usuário: user
+senha: user2020
+```
 
 ## Pipeline
 
@@ -56,13 +61,13 @@ Pronto! Agora já podemos iniciar nosso tutorial!
 
 Primeiramente iremos configurar as ferramentas necessárias para a execução do pipeline para não nos preocuparmos com isso mais tarde. 
 
-O primeiro passo é dar permissão para esse script ```configuracao.sh``` ser executado:
+O primeiro passo é dar permissão para esse  ```configuracao.sh``` ser executado:
 
 ```
 $ chmod +x configuracao.sh
 ```
 
-Para rodar o script, basta rodar o script passando como parâmetro a pasta que vai armazenar os arquivos das ferramentas:
+Para rodar o , basta rodar o  passando como parâmetro a pasta que vai armazenar os arquivos das ferramentas:
 
 ```
 $ ./configuracao.sh ferramentas
@@ -167,6 +172,7 @@ OBS.: É esperado que nada (ou praticamente nada) alinhe ao genoma humano, pois 
 Inicialmente, convertemos o arquivo SAM para um arquivo binário (BAM):
 
 ```
+$ cd ..
 $ mkdir -p results/bowtie2/bam
 $ samtools view -bS results/bowtie2/sam/SRR8580960_trimmed.sam > results/bowtie2/bam/SRR8580960_trimmed.bam
 $ samtools view -bS results/bowtie2/sam/SRR8580963_trimmed.sam > results/bowtie2/bam/SRR8580963_trimmed.bam
@@ -213,7 +219,7 @@ $ kraken2-build --download-library protozoa --threads 4 --db ref_dbs/pathogens_d
 $ kraken2-build --download-library bacteria --threads 4 --db ref_dbs/pathogens_db
 ```
 
-Depois, fazemos o download do genoma de outros micro-organismos que já foram identificados como causadores de neuroinfecções, mas não estavam no banco de dados anterior. Para isso rodamos o script ```download_extra.sh```:
+Depois, fazemos o download do genoma de outros micro-organismos que já foram identificados como causadores de neuroinfecções, mas não estavam no banco de dados anterior. Para isso rodamos o  ```download_extra.sh```:
 
 ```
 $ chmod +x download_extra.sh
@@ -254,7 +260,7 @@ Analise os resultados gerados em ```results/kraken2/classified```, ```results/kr
 
 #### 5.4. Filtragem de resultados para incluir somente patógenos de neuroinfecções
 
-Para reduzir nosso escopo de análise, podemos utilizar um script em Python para filtrar os resultados para considerar somente patógenos de neuroinfecções:
+Para reduzir nosso escopo de análise, podemos utilizar um  em Python para filtrar os resultados para considerar somente patógenos de neuroinfecções:
 
 ```
 $ python3 filtrar_patogenos.py 
@@ -316,7 +322,7 @@ $ blastn -query results/megahit/SRR8580963_trimmed.out/final.contigs.fa -db ref_
 
 Para analisar os dados apresentados em ```results/blastn_card_montados```, consideremos a seguinte tabela, que apresenta o significado das colunas em ordem:
 
-Field | Description
+Field | Deion
 | --- | --- |
 | qseqid | query (e.g., gene) sequence id
 | sseqid | subject (e.g., reference genome) sequence id
